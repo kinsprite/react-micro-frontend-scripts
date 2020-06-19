@@ -1,6 +1,6 @@
 {
   "name": "react-microservice-scripts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "index.js",
   "license": "MIT",
   "description": "NodeJS scripts to build react microservice with webpack",
@@ -16,7 +16,6 @@
     "css-loader": "^3.6.0",
     "eslint": "^7.2.0",
     "eslint-config-airbnb": "^18.1.0",
-    "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",

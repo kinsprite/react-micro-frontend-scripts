@@ -25,7 +25,7 @@ function getPublicUrlOrPath(isEnvDevelopment) {
     publicRootURL = publicRootURL.endsWith('/') ? publicRootURL : `${publicRootURL}/`;
   }
 
-  const folderName = pkgJson.getMicroserviceFolderName();
+  const folderName = pkgJson.getMicroFrontendFolderName();
   // must add the end '/'
   return `${publicRootURL}${folderName}/${getRevisionPath()}/`;
 }

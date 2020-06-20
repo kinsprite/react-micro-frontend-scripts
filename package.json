@@ -1,10 +1,10 @@
 {
-  "name": "react-microservice-scripts",
-  "version": "1.0.3",
+  "name": "react-micro-frontend-scripts",
+  "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "description": "NodeJS scripts to build react microservice with webpack",
-  "repository": "https://github.com/kinsprite/react-microservice-scripts",
+  "description": "NodeJS scripts to build react micro-frontend with webpack",
+  "repository": "https://github.com/kinsprite/react-micro-frontend-scripts",
   "author": "kinsprite",
   "types": "./lib/react-app.d.ts",
   "engines": {

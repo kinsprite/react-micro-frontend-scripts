@@ -43,6 +43,8 @@ module.exports = (env) => {
     [mainEntryName]: resolvePath('src/index.tsx'),
   };
 
+  const manifestFileName = `${pkgJson.getReactMicroFrontendShort()}-manifest.json`;
+
   const gitRev = getGitTagOrShort();
   const publicUrlOrPath = getPublicUrlOrPath(isEnvDevelopment);
   const libraryName = pkgJson.getLibraryName();
@@ -113,7 +115,7 @@ module.exports = (env) => {
       isEnvDevelopment && new CaseSensitivePathsPlugin(),
       isEnvDevelopment && new WatchMissingNodeModulesPlugin(resolvePath('node_modules')),
       new ManifestPlugin({
-        fileName: 'rms-manifest.json',
+        fileName: manifestFileName,
         publicPath: publicUrlOrPath,
         generate: (seed, files, entrypoints) => {
           const manifestFiles = files.reduce((manifest, file) => {

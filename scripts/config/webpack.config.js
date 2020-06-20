@@ -43,8 +43,8 @@ module.exports = (env) => {
     process.env.IMAGE_INLINE_SIZE_LIMIT || '10000', 10,
   );
 
-  const enableSplitChunks = process.env.ENABLE_SPLIT_CHUNKS === 'true';
-  const enableRuntimeChunk = process.env.ENABLE_RUNTIME_CHUNK === 'true';
+  const shouldSplitChunks = process.env.SPLIT_CHUNKS !== 'false';
+  const shouldRuntimeChunk = process.env.RUNTIME_CHUNK !== 'false';
 
   const mainEntryName = pkgJson.getMainEntryName();
 
@@ -298,12 +298,12 @@ module.exports = (env) => {
           },
         }),
       ],
-      splitChunks: enableSplitChunks && {
+      splitChunks: shouldSplitChunks && {
         chunks: 'all',
         name: false,
       },
       // Keep the runtime chunk separated to enable long term caching
-      runtimeChunk: enableRuntimeChunk && {
+      runtimeChunk: shouldRuntimeChunk && {
         name: (entrypoint) => `runtime-${entrypoint.name}`,
       },
     },

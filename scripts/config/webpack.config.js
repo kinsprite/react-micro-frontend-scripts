@@ -1,10 +1,12 @@
 const webpack = require('webpack');
+const PnpWebpackPlugin = require('pnp-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
+const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 
 const TerserPlugin = require('terser-webpack-plugin');
@@ -15,8 +17,8 @@ const safePostCssParser = require('postcss-safe-parser');
 const postcssNormalize = require('postcss-normalize');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 
+const paths = require('./paths');
 const pkgJson = require('../internal/pkgJson');
-const resolvePath = require('../internal/resolvePath');
 const getPublicUrlOrPath = require('../internal/getPublicUrlOrPath');
 const getGitTagOrShort = require('../internal/getGitTagOrShort');
 
@@ -40,7 +42,7 @@ module.exports = (env) => {
   const mainEntryName = pkgJson.getMainEntryName();
 
   const webpackEntry = {
-    [mainEntryName]: resolvePath('src/index.tsx'),
+    [mainEntryName]: paths.mainEntry(),
   };
 
   const manifestFileName = `${pkgJson.getReactMicroFrontendShort()}-manifest.json`;
@@ -109,11 +111,11 @@ module.exports = (env) => {
     entry: webpackEntry,
     plugins: [
       new CleanWebpackPlugin(),
-      new HtmlWebpackPlugin({ template: resolvePath('public/index.html') }),
-      new ModuleNotFoundPlugin(resolvePath('.')),
+      new HtmlWebpackPlugin({ template: paths.template() }),
+      new ModuleNotFoundPlugin(paths.appRoot()),
       isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
       isEnvDevelopment && new CaseSensitivePathsPlugin(),
-      isEnvDevelopment && new WatchMissingNodeModulesPlugin(resolvePath('node_modules')),
+      isEnvDevelopment && new WatchMissingNodeModulesPlugin(paths.nodeModules()),
       new ManifestPlugin({
         fileName: manifestFileName,
         publicPath: publicUrlOrPath,
@@ -147,6 +149,7 @@ module.exports = (env) => {
       }),
       new ForkTsCheckerWebpackPlugin({
         eslint: {
+          enabled: true,
           files: './src/**/*', // required - same as command `eslint ./src/**/* --ext .ts,.tsx,.js,.jsx`
         },
       }),
@@ -173,7 +176,7 @@ module.exports = (env) => {
             exclude: /node_modules/,
             use: [
               {
-                loader: 'ts-loader',
+                loader: require.resolve('ts-loader'),
                 options: {
                   // disable type checker - we will use it in fork plugin
                   transpileOnly: true,
@@ -222,9 +225,19 @@ module.exports = (env) => {
     },
     resolve: {
       extensions: ['.tsx', '.ts', '.jsx', '.js'],
+      plugins: [
+        PnpWebpackPlugin,
+        // Prevents users from importing files from outside of src/ (or node_modules/).
+        new ModuleScopePlugin(paths.src(), [paths.pkgJson()]),
+      ],
+    },
+    resolveLoader: {
+      plugins: [
+        PnpWebpackPlugin.moduleLoader(module),
+      ],
     },
     output: {
-      path: resolvePath((isEnvProduction && 'dist') || (isEnvDevelopment && '.tmp')),
+      path: (isEnvProduction && paths.prodDist()) || (isEnvDevelopment && paths.devTmp()),
       publicPath: publicUrlOrPath,
       filename: (isEnvProduction && '[name].[contenthash:8].js') || (isEnvDevelopment && '[name].js'),
       chunkFilename: (isEnvProduction && '[name].[contenthash:8].chunk.js') || (isEnvDevelopment && '[name].chunk.js'),
@@ -276,6 +289,14 @@ module.exports = (env) => {
           },
         }),
       ],
+      splitChunks: {
+        chunks: 'all',
+        name: false,
+      },
+      // Keep the runtime chunk separated to enable long term caching
+      runtimeChunk: {
+        name: (entrypoint) => `runtime~${entrypoint.name}`,
+      },
     },
   };
 };

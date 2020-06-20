@@ -2,7 +2,7 @@ const chalk = require('chalk');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 
-const resolvePath = require('./resolvePath');
+const paths = require('../config/paths');
 const getPublicUrlOrPath = require('./getPublicUrlOrPath');
 
 const webpackConfig = require('../config/webpack.config');
@@ -49,7 +49,7 @@ module.exports = (env, onHookWebpackConfig) => {
   if (env === 'development' && process.env.DISABLE_DEV_SERVER !== 'true') {
     const devServerOptions = {
       port: 9000,
-      contentBase: resolvePath('.tmp'),
+      contentBase: paths.devTmp(),
       contentBasePublicPath: getPublicUrlOrPath(true),
       watchContentBase: true,
       hot: true,

@@ -4,6 +4,7 @@ function build() {
   // --- ENV for 'production' only ---
   // process.env.PUBLIC_ROOT_URL = '/';
   // process.env.GENERATE_SOURCEMAP = 'true';
+  // process.env.INLINE_RUNTIME_CHUNK = 'true';
 
   // --- ENV for ALL ---
   // process.env.IMAGE_INLINE_SIZE_LIMIT = '1000';

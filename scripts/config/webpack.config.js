@@ -39,6 +39,9 @@ module.exports = (env) => {
     process.env.IMAGE_INLINE_SIZE_LIMIT || '10000', 10,
   );
 
+  const enableSplitChunks = process.env.ENABLE_SPLIT_CHUNKS === 'true';
+  const enableRuntimeChunk = process.env.ENABLE_RUNTIME_CHUNK === 'true';
+
   const mainEntryName = pkgJson.getMainEntryName();
 
   const webpackEntry = {
@@ -149,8 +152,8 @@ module.exports = (env) => {
       }),
       new ForkTsCheckerWebpackPlugin({
         eslint: {
-          enabled: true,
-          files: './src/**/*', // required - same as command `eslint ./src/**/* --ext .ts,.tsx,.js,.jsx`
+          enabled: isEnvDevelopment,
+          files: './src/**/*.@(tsx|ts|jsx|js)',
         },
       }),
       isEnvProduction && new MiniCssExtractPlugin({
@@ -289,12 +292,12 @@ module.exports = (env) => {
           },
         }),
       ],
-      splitChunks: {
+      splitChunks: enableSplitChunks && {
         chunks: 'all',
         name: false,
       },
       // Keep the runtime chunk separated to enable long term caching
-      runtimeChunk: {
+      runtimeChunk: enableRuntimeChunk && {
         name: (entrypoint) => `runtime~${entrypoint.name}`,
       },
     },

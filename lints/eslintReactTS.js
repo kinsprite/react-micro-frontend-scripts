@@ -1,5 +1,3 @@
-const allExtensions = ['.ts', '.tsx', '.d.ts', '.js', '.jsx', 'json', '.svg', '.png'];
-
 module.exports = {
   env: {
     browser: true,
@@ -34,13 +32,5 @@ module.exports = {
         tsx: 'never',
       },
     ],
-  },
-  settings: {
-    'import/extensions': allExtensions,
-    'import/resolver': {
-      node: {
-        extensions: allExtensions,
-      },
-    },
   },
 };

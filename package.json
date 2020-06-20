@@ -1,6 +1,6 @@
 {
   "name": "react-micro-frontend-scripts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "license": "MIT",
   "description": "NodeJS scripts to build react micro-frontend with webpack",
@@ -10,6 +10,9 @@
   "engines": {
     "node": ">=8.10"
   },
+  "scripts": {
+    "lint": "yarn run eslint ./**/*.js"
+  },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^3.3.0",
     "@typescript-eslint/parser": "^3.3.0",
@@ -18,12 +21,12 @@
     "chalk": "^4.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.6.0",
-    "eslint": "^7.2.0",
+    "eslint": "~7.2.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-plugin-import": "^2.21.2",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.19.0",
-    "eslint-plugin-react-hooks": "^2.5.0",
+    "eslint-plugin-jsx-a11y": "^6.3.0",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.0.0",
     "file-loader": "^6.0.0",
     "fork-ts-checker-webpack-plugin": "^5.0.1",
     "git-rev-sync": "^2.0.0",

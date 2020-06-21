@@ -184,7 +184,7 @@ module.exports = (env) => {
           },
           {
             test: /\.[jt]sx?$/,
-            exclude: /node_modules/,
+            // exclude: /node_modules/,
             use: [
               {
                 loader: require.resolve('ts-loader'),

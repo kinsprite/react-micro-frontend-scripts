@@ -7,25 +7,38 @@ function getPkgJson() {
   return require(resolvePath('package.json'));
 }
 
+function getPkgNamePrefix() {
+  return process.env.REACT_MICRO_FRONTEND_PKG_NAME_PREFIX || 'react-micro-frontend';
+}
+
 function getReactMicroFrontendShort() {
   return process.env.REACT_MICRO_FRONTEND_SHORT || 'rmf';
 }
 
-function getMicroFrontendFolderName() {
+/**
+ * @param {string} [pkgName] Optional pkgName
+ */
+function getMicroFrontendFolderName(pkgName) {
   const pkgJson = getPkgJson();
   const shortRmf = getReactMicroFrontendShort();
-  const names = `${pkgJson.name}`.replace('react-micro-frontend', shortRmf).split('/');
+  const names = `${pkgName || pkgJson.name}`.replace(getPkgNamePrefix(), shortRmf).split('/');
   const lastName = names[names.length - 1];
   return paramCase(lastName);
 }
 
-function getLibraryName() {
-  return camelCase(getMicroFrontendFolderName());
+/**
+ * @param {string} [pkgName] optional pkg name
+ */
+function getLibraryName(pkgName) {
+  return camelCase(getMicroFrontendFolderName(pkgName));
 }
 
-function getMainEntryName() {
+/**
+ * @param {string} [pkgName] Optional pkgName
+ */
+function getMainEntryName(pkgName) {
   const pkgJson = getPkgJson();
-  const names = `${pkgJson.name}`.replace('react-micro-frontend', '').split('/');
+  const names = `${pkgName || pkgJson.name}`.replace(getPkgNamePrefix(), '').split('/');
   const lastName = names[names.length - 1];
   return paramCase(lastName);
 }
@@ -37,6 +50,7 @@ function getRoutes() {
 
 module.exports = {
   getPkgJson,
+  getPkgNamePrefix,
   getReactMicroFrontendShort,
   getMicroFrontendFolderName,
   getLibraryName,

@@ -183,16 +183,6 @@ module.exports = (env) => {
             },
           },
           {
-            test: /polyfill.js$/,
-            exclude: /node_modules/,
-            use: [{
-              loader: require.resolve('babel-loader'),
-              options: {
-                presets: ['@babel/preset-env'],
-              },
-            }],
-          },
-          {
             test: /\.[jt]sx?$/,
             exclude: /node_modules/,
             use: [

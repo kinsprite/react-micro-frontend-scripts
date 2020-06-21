@@ -40,6 +40,11 @@ function webpackCallback(err, stats) {
  * @param {Function=} onHookWebpackConfig Function: (webpack.Configuration) => webpack.Configuration
  */
 module.exports = (env, onHookWebpackConfig) => {
+  if (env) {
+    process.env.BABEL_ENV = env;
+    process.env.NODE_ENV = env;
+  }
+
   let config = webpackConfig(env);
 
   if (onHookWebpackConfig) {

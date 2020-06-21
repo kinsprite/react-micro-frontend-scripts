@@ -38,6 +38,8 @@ module.exports = (env) => {
   // Some apps do not need the benefits of saving a web request, so not inlining the chunk
   // makes for a smoother build process.
   const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
+  // Minimize files in production
+  const shouldMinimizeInProduction = process.env.MINIMIZE_IN_PRODUCTION !== 'false';
 
   const imageInlineSizeLimit = parseInt(
     process.env.IMAGE_INLINE_SIZE_LIMIT || '10000', 10,
@@ -181,15 +183,25 @@ module.exports = (env) => {
             },
           },
           {
+            test: /polyfill.js$/,
+            exclude: /node_modules/,
+            use: [{
+              loader: require.resolve('babel-loader'),
+              options: {
+                presets: ['@babel/preset-env'],
+              },
+            }],
+          },
+          {
             test: /\.[jt]sx?$/,
             exclude: /node_modules/,
             use: [
               {
                 loader: require.resolve('ts-loader'),
-                options: {
+                options: PnpWebpackPlugin.tsLoaderOptions({
                   // disable type checker - we will use it in fork plugin
                   transpileOnly: true,
-                },
+                }),
               },
             ],
           },
@@ -254,7 +266,7 @@ module.exports = (env) => {
       libraryTarget: 'umd',
     },
     optimization: {
-      minimize: isEnvProduction,
+      minimize: isEnvProduction && shouldMinimizeInProduction,
       minimizer: [
         // This is only used in production mode
         new TerserPlugin({

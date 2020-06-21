@@ -119,7 +119,7 @@ module.exports = (env) => {
       : isEnvDevelopment && 'cheap-module-source-map',
     entry: webpackEntry,
     plugins: [
-      new CleanWebpackPlugin(),
+      (isEnvProduction || (isEnvDevelopment && process.env.DISABLE_DEV_SERVER === 'true')) && new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({ template: paths.template() }),
       isEnvProduction && shouldInlineRuntimeChunk
         && new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),

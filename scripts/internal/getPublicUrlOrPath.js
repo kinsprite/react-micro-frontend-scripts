@@ -14,15 +14,15 @@ function getRevisionPath() {
 }
 
 function getPublicUrlOrPath(isEnvDevelopment) {
-  if (isEnvDevelopment) {
-    return undefined;
-  }
-
   let publicRootURL = process.env.PUBLIC_ROOT_URL || '';
 
   // ensure last slash exists
   if (publicRootURL) {
     publicRootURL = publicRootURL.endsWith('/') ? publicRootURL : `${publicRootURL}/`;
+  }
+
+  if (isEnvDevelopment) {
+    return publicRootURL.startsWith('.') ? '/' : (publicRootURL || '/');
   }
 
   const folderName = pkgJson.getMicroFrontendFolderName();

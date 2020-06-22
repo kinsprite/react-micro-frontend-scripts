@@ -1,6 +1,6 @@
 {
   "name": "react-micro-frontend-scripts",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "main": "index.js",
   "license": "MIT",
   "description": "NodeJS scripts to build react micro-frontend with webpack",
@@ -21,6 +21,7 @@
     "chalk": "^4.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.6.0",
+    "duplicate-package-checker-webpack-plugin": "^3.0.0",
     "eslint": "~7.2.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-plugin-import": "^2.21.2",

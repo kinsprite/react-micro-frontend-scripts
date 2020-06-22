@@ -9,9 +9,18 @@ const frameworkVendorExportsDefault = {
   'react-router-dom': 'ReactRouterDOM',
   redux: 'Redux',
   'react-redux': 'ReactRedux',
+
   rxjs: 'RxJS',
+  // 'rxjs/ajax': 'RxJSAjax',
+  // 'rxjs/fetch': 'RxJSFetch',
+  'rxjs/operators': 'RxJSOperators',
+  // 'rxjs/testing': 'RxJSTesting',
+  // 'rxjs/webSocket': 'RxJSWebSocket',
+
   'redux-observable': 'ReduxObservable',
+
   'redux-saga': 'ReduxSaga',
+  'redux-saga/effects': 'ReduxSagaEffects',
 };
 
 /**

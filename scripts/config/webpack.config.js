@@ -46,6 +46,10 @@ module.exports = (env) => {
     process.env.IMAGE_INLINE_SIZE_LIMIT || '10000', 10,
   );
 
+  const postcssPresetEnvStage = parseInt(
+    process.env.POSTCSS_PRESET_ENV_STAGE || '3', 10,
+  );
+
   const shouldSplitChunks = process.env.SPLIT_CHUNKS !== 'false';
   const shouldRuntimeChunk = process.env.RUNTIME_CHUNK !== 'false';
 
@@ -82,7 +86,7 @@ module.exports = (env) => {
               autoprefixer: {
                 flexbox: 'no-2009',
               },
-              stage: 3,
+              stage: postcssPresetEnvStage,
             }),
             postcssNormalize(),
           ],

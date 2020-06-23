@@ -24,8 +24,8 @@ const pkgJson = require('../internal/pkgJson');
 const getPublicUrlOrPath = require('../internal/getPublicUrlOrPath');
 const getGitTagOrShort = require('../internal/getGitTagOrShort');
 
-const cssRegex = /\.css$/;
-const cssModuleRegex = /\.module\.css$/;
+const cssRegex = /\.p?css$/;
+const cssModuleRegex = /\.module\.p?css$/;
 
 // (env: string) => {}
 module.exports = (env) => {

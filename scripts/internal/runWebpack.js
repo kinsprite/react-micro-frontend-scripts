@@ -1,6 +1,7 @@
 const chalk = require('chalk');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
+const tcpPortUsed = require('tcp-port-used');
 
 const paths = require('../config/paths');
 const getPublicUrlOrPath = require('./getPublicUrlOrPath');
@@ -39,7 +40,7 @@ function webpackCallback(err, stats) {
  * @param {string} env 'development' or 'production'
  * @param {Function=} onHookWebpackConfig Function: (webpack.Configuration) => webpack.Configuration
  */
-module.exports = (env, onHookWebpackConfig) => {
+module.exports = async (env, onHookWebpackConfig) => {
   if (env) {
     process.env.BABEL_ENV = env;
     process.env.NODE_ENV = env;
@@ -73,12 +74,38 @@ module.exports = (env, onHookWebpackConfig) => {
       ...config.devServer,
     };
 
-    const compiler = webpack(config);
-    const server = new WebpackDevServer(compiler, devServerOptions);
+    const host = devServerOptions.host || '127.0.0.1';
+    const startPort = devServerOptions.port;
+    const endPort = startPort + 30;
 
-    server.listen(devServerOptions.port, '127.0.0.1', () => {
-      console.log(`Starting server on http://localhost:${devServerOptions.port}`);
-    });
+    let port = startPort;
+
+    const checkPortAndRun = () => {
+      if (port > endPort) {
+        console.log(error(`No free port [${startPort}-${endPort}] for WebpackDevServer!`));
+        return;
+      }
+
+      tcpPortUsed.check(port, host).then((isUse) => {
+        if (isUse) {
+          port += 1;
+          checkPortAndRun();
+        } else {
+          const compiler = webpack(config);
+          devServerOptions.port = port;
+          const server = new WebpackDevServer(compiler, devServerOptions);
+
+          server.listen(port, host, () => {
+            console.log(`Starting server on http://${host}:${port}`);
+          });
+        }
+      }, () => {
+        port += 1;
+        checkPortAndRun();
+      });
+    };
+
+    checkPortAndRun();
   } else {
     webpack(config, webpackCallback);
   }

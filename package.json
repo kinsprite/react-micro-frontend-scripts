@@ -1,6 +1,6 @@
 {
   "name": "react-micro-frontend-scripts",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "main": "index.js",
   "license": "MIT",
   "description": "NodeJS scripts to build react micro-frontend with webpack",
@@ -57,6 +57,7 @@
     "@types/react": "^16.9.38",
     "@types/react-dom": "^16.9.8",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "tcp-port-used": "^1.0.1"
   }
 }

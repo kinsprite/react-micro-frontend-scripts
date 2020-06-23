@@ -52,14 +52,20 @@ module.exports = (env, onHookWebpackConfig) => {
   }
 
   if (env === 'development' && process.env.DISABLE_DEV_SERVER !== 'true') {
+    const publicUrlOrPath = getPublicUrlOrPath(true);
+
     const devServerOptions = {
       port: 9000,
       contentBase: paths.devTmp(),
-      contentBasePublicPath: getPublicUrlOrPath(true),
+      contentBasePublicPath: publicUrlOrPath,
       watchContentBase: true,
       hot: true,
       injectClient: true,
       // publicPath: getPublicUrlOrPath(true),
+      historyApiFallback: {
+        disableDotRule: true,
+        index: publicUrlOrPath,
+      },
       open: true,
       stats: {
         colors: true,

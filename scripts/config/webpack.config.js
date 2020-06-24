@@ -254,7 +254,8 @@ module.exports = (env) => {
       ],
     },
     output: {
-      path: (isEnvProduction && paths.prodDist()) || (isEnvDevelopment && paths.devTmp()),
+      path: (isEnvProduction && paths.prodDist())
+      || (isEnvDevelopment && (process.env.DISABLE_DEV_SERVER === 'true') && paths.devTmp()) || undefined,
       publicPath: publicUrlOrPath,
       filename: (isEnvProduction && '[name].[contenthash:8].js') || (isEnvDevelopment && '[name].js'),
       chunkFilename: (isEnvProduction && '[name].[contenthash:8].chunk.js') || (isEnvDevelopment && '[name].chunk.js'),

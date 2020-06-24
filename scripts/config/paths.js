@@ -3,6 +3,7 @@ const resolvePath = require('../internal/resolvePath');
 module.exports = {
   appRoot: () => resolvePath('.'),
   src: () => resolvePath('src'),
+  public: () => resolvePath('public'),
   devTmp: () => resolvePath('.tmp'),
   prodDist: () => resolvePath('dist'),
   nodeModules: () => resolvePath('node_modules'),

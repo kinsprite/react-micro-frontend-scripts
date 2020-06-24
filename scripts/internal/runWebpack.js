@@ -57,7 +57,7 @@ module.exports = async (env, onHookWebpackConfig) => {
 
     const devServerOptions = {
       port: 9000,
-      contentBase: paths.devTmp(),
+      contentBase: paths.public(),
       contentBasePublicPath: publicUrlOrPath,
       watchContentBase: true,
       hot: true,

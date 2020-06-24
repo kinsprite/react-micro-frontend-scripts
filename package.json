@@ -1,6 +1,6 @@
 {
   "name": "react-micro-frontend-scripts",
-  "version": "1.6.1",
+  "version": "2.0.0",
   "main": "index.js",
   "license": "MIT",
   "description": "NodeJS scripts to build react micro-frontend with webpack",
@@ -9,6 +9,11 @@
   "types": "./lib/react-app.d.ts",
   "engines": {
     "node": ">=8.10"
+  },
+  "rmfManifest": {
+    "dependencies": [],
+    "routes": [],
+    "render": ""
   },
   "scripts": {
     "lint": "yarn run eslint ./**/*.js"

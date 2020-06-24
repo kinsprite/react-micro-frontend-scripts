@@ -159,8 +159,8 @@ module.exports = (env) => {
             gitRevision: gitRev,
             libraryExport: libraryName,
             publicPath: publicUrlOrPath,
-            routes: pkgJson.getRoutes(),
             serviceName: mainEntryName,
+            ...pkgJson.getRmfManifest(),
           };
         },
       }),

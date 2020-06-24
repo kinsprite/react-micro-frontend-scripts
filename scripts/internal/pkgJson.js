@@ -43,9 +43,9 @@ function getMainEntryName(pkgName) {
   return paramCase(lastName);
 }
 
-function getRoutes() {
+function getRmfManifest() {
   const pkgJson = getPkgJson();
-  return (Array.isArray(pkgJson.routes) && pkgJson.routes) || [];
+  return pkgJson.rmfManifest || {};
 }
 
 module.exports = {
@@ -55,5 +55,5 @@ module.exports = {
   getMicroFrontendFolderName,
   getLibraryName,
   getMainEntryName,
-  getRoutes,
+  getRmfManifest,
 };

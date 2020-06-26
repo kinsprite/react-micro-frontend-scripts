@@ -218,7 +218,7 @@ module.exports = (env) => {
             exclude: cssModuleRegex,
             use: getStyleLoaders({
               importLoaders: 1,
-              sourceMap: true,
+              sourceMap: isEnvProduction && shouldUseSourceMap,
             }),
             // Don't consider CSS imports dead code even if the
             // containing package claims to have no side effects.

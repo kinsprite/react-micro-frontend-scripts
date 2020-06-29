@@ -9,6 +9,7 @@ function build() {
   // process.env.GENERATE_INDEX_HTML === 'false';
 
   // --- ENV for ALL ---
+  // process.env.ENSURE_NO_EXPORTS = 'false';
   // process.env.IMAGE_INLINE_SIZE_LIMIT = '1000';
   // process.env.REACT_MICRO_FRONTEND_SHORT = 'rmf';
   // process.env.SPLIT_CHUNKS = 'true';

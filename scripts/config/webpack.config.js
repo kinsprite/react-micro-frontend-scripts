@@ -65,7 +65,7 @@ module.exports = (env) => {
 
   const gitRev = getGitTagOrShort();
   const publicUrlOrPath = getPublicUrlOrPath(isEnvDevelopment);
-  const libraryName = pkgJson.getLibraryName();
+  const libraryName = process.env.ENSURE_NO_EXPORTS === 'true' ? '' : pkgJson.getLibraryName();
 
   // common function to get style loaders
   const getStyleLoaders = (cssOptions, preProcessor) => {
@@ -261,7 +261,7 @@ module.exports = (env) => {
       publicPath: publicUrlOrPath,
       filename: (isEnvProduction && '[name].[contenthash:8].js') || (isEnvDevelopment && '[name].js'),
       chunkFilename: (isEnvProduction && '[name].[contenthash:8].chunk.js') || (isEnvDevelopment && '[name].chunk.js'),
-      library: libraryName,
+      library: libraryName || undefined,
       libraryTarget: 'umd',
     },
     optimization: {

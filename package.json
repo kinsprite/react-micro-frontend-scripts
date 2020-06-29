@@ -12,7 +12,8 @@
   },
   "rmfManifest": {
     "dependencies": [],
-    "renders": []
+    "renders": [],
+    "extra": {}
   },
   "scripts": {
     "lint": "yarn run eslint ./**/*.js"

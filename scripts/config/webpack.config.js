@@ -42,6 +42,8 @@ module.exports = (env) => {
   // Minimize files in production
   const shouldMinimizeInProduction = process.env.MINIMIZE_IN_PRODUCTION !== 'false';
 
+  const shouldGenerateIndexHTML = !isEnvProduction || process.env.GENERATE_INDEX_HTML === 'true';
+
   const imageInlineSizeLimit = parseInt(
     process.env.IMAGE_INLINE_SIZE_LIMIT || '10000', 10,
   );
@@ -125,9 +127,9 @@ module.exports = (env) => {
     entry: webpackEntry,
     plugins: [
       (isEnvProduction || (isEnvDevelopment && process.env.DISABLE_DEV_SERVER === 'true')) && new CleanWebpackPlugin(),
-      new HtmlWebpackPlugin({ template: paths.template() }),
+      shouldGenerateIndexHTML && new HtmlWebpackPlugin({ template: paths.template() }),
       isEnvProduction && shouldInlineRuntimeChunk
-        && new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),
+        && shouldGenerateIndexHTML && new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),
       new ModuleNotFoundPlugin(paths.appRoot()),
       isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
       isEnvDevelopment && new CaseSensitivePathsPlugin(),

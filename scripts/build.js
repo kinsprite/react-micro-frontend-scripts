@@ -6,6 +6,7 @@ function build() {
   // process.env.GENERATE_SOURCEMAP = 'true';
   // process.env.INLINE_RUNTIME_CHUNK = 'true';
   // process.env.MINIMIZE_IN_PRODUCTION = 'true';
+  // process.env.GENERATE_INDEX_HTML === 'false';
 
   // --- ENV for ALL ---
   // process.env.IMAGE_INLINE_SIZE_LIMIT = '1000';

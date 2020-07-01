@@ -263,6 +263,12 @@ module.exports = (env) => {
       chunkFilename: (isEnvProduction && '[name].[contenthash:8].chunk.js') || (isEnvDevelopment && '[name].chunk.js'),
       library: libraryName || undefined,
       libraryTarget: 'umd',
+      // Prevents conflicts when multiple webpack runtimes (from different apps)
+      // are used on the same page.
+      jsonpFunction: `webpackJsonp${pkgJson.getLibraryName()}`,
+      // this defaults to 'window', but by setting it to 'this' then
+      // module chunks which are built will work in web workers as well.
+      globalObject: 'this',
     },
     optimization: {
       minimize: isEnvProduction && shouldMinimizeInProduction,

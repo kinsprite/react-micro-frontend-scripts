@@ -2,7 +2,9 @@ const runWebpack = require('./internal/runWebpack');
 
 function build() {
   // --- ENV for 'production' only ---
+  // process.env.PUBLIC_DISABLE_REVISION = 'false'; // 'true' for caching optimization
   // process.env.PUBLIC_ROOT_URL = '/';
+  // process.env.PUBLIC_URL = '/rmf-app-abc/'; // PUBLIC_URL will override PUBLIC_ROOT_URL
   // process.env.GENERATE_SOURCEMAP = 'true';
   // process.env.INLINE_RUNTIME_CHUNK = 'true';
   // process.env.MINIMIZE_IN_PRODUCTION = 'true';

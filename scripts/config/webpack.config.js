@@ -309,6 +309,9 @@ module.exports = (env) => {
           },
         }),
       ],
+      // Long term caching
+      moduleIds: isEnvProduction ? 'hashed' : false,
+      // Automatically split vendor and commons
       splitChunks: shouldSplitChunks && {
         chunks: 'all',
         name: false,

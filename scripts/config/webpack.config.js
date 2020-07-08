@@ -26,6 +26,8 @@ const getGitTagOrShort = require('../internal/getGitTagOrShort');
 
 const cssRegex = /\.p?css$/;
 const cssModuleRegex = /\.module\.p?css$/;
+const sassRegex = /\.(scss|sass)$/;
+const sassModuleRegex = /\.module\.(scss|sass)$/;
 
 // (env: string) => {}
 module.exports = (env) => {
@@ -191,7 +193,7 @@ module.exports = (env) => {
             },
           },
           {
-            test: /\.[jt]sx?$/,
+            test: /\.(js|mjs|jsx|ts|tsx)$/,
             // exclude: /node_modules/,
             use: [
               {
@@ -227,6 +229,37 @@ module.exports = (env) => {
             // Remove this when webpack adds a warning or an error for this.
             // See https://github.com/webpack/webpack/issues/6571
             sideEffects: true,
+          },
+          {
+            test: sassRegex,
+            exclude: sassModuleRegex,
+            use: getStyleLoaders(
+              {
+                importLoaders: 3,
+                sourceMap: isEnvProduction && shouldUseSourceMap,
+              },
+              'sass-loader',
+            ),
+            // Don't consider CSS imports dead code even if the
+            // containing package claims to have no side effects.
+            // Remove this when webpack adds a warning or an error for this.
+            // See https://github.com/webpack/webpack/issues/6571
+            sideEffects: true,
+          },
+          // Adds support for CSS Modules, but using SASS
+          // using the extension .module.scss or .module.sass
+          {
+            test: sassModuleRegex,
+            use: getStyleLoaders(
+              {
+                importLoaders: 3,
+                sourceMap: isEnvProduction && shouldUseSourceMap,
+                modules: {
+                  getLocalIdent: getCSSModuleLocalIdent,
+                },
+              },
+              'sass-loader',
+            ),
           },
           {
             loader: require.resolve('file-loader'),

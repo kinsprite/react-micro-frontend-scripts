@@ -9,6 +9,8 @@ function build() {
   // process.env.INLINE_RUNTIME_CHUNK = 'true';
   // process.env.MINIMIZE_IN_PRODUCTION = 'true';
   // process.env.GENERATE_INDEX_HTML === 'false';
+  // process.env.WORKBOX_GENERATE_SW === 'false';
+  // process.env.WORKBOX_INJECT_MANIFEST === 'false';
 
   // --- ENV for ALL ---
   // process.env.ENSURE_NO_EXPORTS = 'false';

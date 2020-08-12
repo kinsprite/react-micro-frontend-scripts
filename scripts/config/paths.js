@@ -10,4 +10,5 @@ module.exports = {
   mainEntry: () => resolvePath('src/index'),
   template: () => resolvePath('public/index.html'),
   pkgJson: () => resolvePath('package.json'),
+  swSrc: () => resolvePath('src/sw.ts'),
 };

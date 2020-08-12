@@ -5,6 +5,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
+const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
@@ -45,6 +46,8 @@ module.exports = (env) => {
   const shouldMinimizeInProduction = process.env.MINIMIZE_IN_PRODUCTION !== 'false';
 
   const shouldGenerateIndexHTML = !isEnvProduction || process.env.GENERATE_INDEX_HTML === 'true';
+  const shouldWorkboxGenerateSW = isEnvProduction && process.env.WORKBOX_GENERATE_SW === 'true';
+  const shouldWorkboxInjectManifest = isEnvProduction && process.env.WORKBOX_INJECT_MANIFEST === 'true';
 
   const imageInlineSizeLimit = parseInt(
     process.env.IMAGE_INLINE_SIZE_LIMIT || '10000', 10,
@@ -168,6 +171,30 @@ module.exports = (env) => {
           };
         },
       }),
+      // Generate a service worker script that will precache, and keep up to date,
+      // the HTML & assets that are part of the webpack build.
+      shouldWorkboxGenerateSW
+        && new WorkboxWebpackPlugin.GenerateSW({
+          clientsClaim: true,
+          exclude: [/\.map$/, /asset-manifest\.json$/, /rmf-manifest\.json$/],
+          navigateFallback: `${publicUrlOrPath}index.html`,
+          navigateFallbackDenylist: [
+            // Exclude URLs starting with /_, as they're likely an API call
+            new RegExp('^/_'),
+            new RegExp('^/api'),
+            // Exclude any URLs whose last part seems to be a file extension
+            // as they're likely a resource and not a SPA route.
+            // URLs containing a "?" character won't be blacklisted as they're likely
+            // a route with query params (e.g. auth callbacks).
+            new RegExp('/[^/?]+\\.[^/]+$'),
+          ],
+          skipWaiting: true,
+        }),
+      shouldWorkboxInjectManifest
+         && new WorkboxWebpackPlugin.InjectManifest({
+           swSrc: paths.swSrc(),
+           exclude: [/\.map$/, /asset-manifest\.json$/, /rmf-manifest\.json$/],
+         }),
       new ForkTsCheckerWebpackPlugin({
         eslint: {
           enabled: isEnvDevelopment,
@@ -194,14 +221,21 @@ module.exports = (env) => {
           },
           {
             test: /\.(js|mjs|jsx|ts|tsx)$/,
-            // exclude: /node_modules/,
+            exclude: /node_modules/,
             use: [
               {
-                loader: require.resolve('ts-loader'),
-                options: PnpWebpackPlugin.tsLoaderOptions({
-                  // disable type checker - we will use it in fork plugin
-                  transpileOnly: true,
-                }),
+                loader: require.resolve('babel-loader'),
+                options: {
+                  presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
+                  plugins: ['@babel/plugin-transform-runtime'],
+                  // This is a feature of `babel-loader` for webpack (not Babel itself).
+                  // It enables caching results in ./node_modules/.cache/babel-loader/
+                  // directory for faster rebuilds.
+                  cacheDirectory: true,
+                  // See #6846 for context on why cacheCompression is disabled
+                  cacheCompression: false,
+                  compact: isEnvProduction,
+                },
               },
             ],
           },

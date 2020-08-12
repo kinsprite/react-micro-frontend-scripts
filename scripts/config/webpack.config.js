@@ -176,7 +176,7 @@ module.exports = (env) => {
       shouldWorkboxGenerateSW
         && new WorkboxWebpackPlugin.GenerateSW({
           clientsClaim: true,
-          exclude: [/\.map$/, /asset-manifest\.json$/, /rmf-manifest\.json$/],
+          exclude: [/\.map$/, /asset-manifest\.json$/, /rmf-manifest\.json$/, /\.LICENSE\.txt$/],
           navigateFallback: `${publicUrlOrPath}index.html`,
           navigateFallbackDenylist: [
             // Exclude URLs starting with /_, as they're likely an API call
@@ -193,7 +193,7 @@ module.exports = (env) => {
       shouldWorkboxInjectManifest
          && new WorkboxWebpackPlugin.InjectManifest({
            swSrc: paths.swSrc(),
-           exclude: [/\.map$/, /asset-manifest\.json$/, /rmf-manifest\.json$/],
+           exclude: [/\.map$/, /asset-manifest\.json$/, /rmf-manifest\.json$/, /\.LICENSE\.txt$/],
          }),
       new ForkTsCheckerWebpackPlugin({
         eslint: {

@@ -23,6 +23,8 @@ function build() {
   // process.env.FRAMEWORK_PKG_NAME = 'react-micro-frontend-framework';
   // process.env.REACT_MICRO_FRONTEND_PKG_NAME_PREFIX= 'react-micro-frontend';
 
+  // process.env.PREACT_MOBILE = 'false';
+
   runWebpack('production');
 }
 

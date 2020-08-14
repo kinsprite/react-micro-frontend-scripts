@@ -36,6 +36,7 @@ module.exports = (env) => {
   const isEnvProduction = env === 'production';
 
   const isEnvProductionProfile = isEnvProduction && process.argv.includes('--profile');
+  const isPreact = process.env.PREACT_MOBILE === 'true';
 
   // Source maps are resource heavy and can cause out of memory issue for large source files.
   const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
@@ -226,7 +227,14 @@ module.exports = (env) => {
               {
                 loader: require.resolve('babel-loader'),
                 options: {
-                  presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
+                  presets: [
+                    ['@babel/preset-env'],
+                    isPreact ? ['@babel/preset-react', {
+                      pragma: 'h',
+                      pragmaFrag: 'Fragment',
+                    }] : ['@babel/preset-react'],
+                    ['@babel/preset-typescript'],
+                  ],
                   plugins: ['@babel/plugin-transform-runtime'],
                   // This is a feature of `babel-loader` for webpack (not Babel itself).
                   // It enables caching results in ./node_modules/.cache/babel-loader/

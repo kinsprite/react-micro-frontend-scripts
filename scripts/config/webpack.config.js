@@ -194,7 +194,7 @@ module.exports = (env) => {
       shouldWorkboxInjectManifest
          && new WorkboxWebpackPlugin.InjectManifest({
            swSrc: paths.swSrc(),
-           exclude: [/index\.html$/, /\.map$/, /asset-manifest\.json$/, /rmf-manifest\.json$/, /\.LICENSE\.txt$/],
+           exclude: [/\.map$/, /asset-manifest\.json$/, /rmf-manifest\.json$/, /\.LICENSE\.txt$/],
          }),
       new ForkTsCheckerWebpackPlugin({
         eslint: {
